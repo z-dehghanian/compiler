@@ -64,7 +64,7 @@ int i=0,j=0,n=0,idcounter=0,include_counter=0;
 int main_flag=0,z,o=0,v=0,flag_int=0,error_counter=0,flag_build=0,w,intmain_flag=0,if_flag=0,lcounter=1,while_flag=0,syntax_flag=0,flag_ir=0;
 FILE *fp;
 int main()
-{if(flag_ir==0){
+{
     if(syntax_flag==0){
   findsharpe();
     file();
@@ -74,11 +74,14 @@ int main()
         i++;
     syntax();}//z tedadie ke toosh arraye ye word por shode!!
        // if (error_counter==0){
-     else if (error_counter==0){   z=i;
+     else if (error_counter==0){
+            fp=fopen("IR.txt","a");
+            z=i;
         i=0;
         changeToIR();
         i=0;
-        IR();}}
+        IR();
+    error_counter=1; }
     //}
     return 0;
 }
@@ -588,10 +591,6 @@ if(!strcmp(wordm[i].token,"identifier")){
             i++;
             syntax();
     }
-    else if ((!strcmp(wordm[i].attribute,"\0")))
-    {
-
-    }
     else
         {
             strcpy(error,";");
@@ -858,7 +857,6 @@ void punc(void){
 int oskol;
 void error_attribute(void){
 oskol=i;
-if((!strcmp(wordm[i].attribute,"\0")))return;
 int p=0;
 error_counter++;
 if(!strcmp(wordm[i].token,"error")){
@@ -1030,15 +1028,23 @@ void changeToIR(void){
                 strcpy(wordm[i].ir," == ");
                 i++;
             }
+            else if(strcmp(wordm[i].attribute,"||")==0){
+                strcpy(wordm[i].ir," || ");
+                i++;
+            }
+            else if(strcmp(wordm[i].attribute,"&&")==0){
+                strcpy(wordm[i].ir," && ");
+                i++;
+            }
              else if(strcmp(wordm[i].attribute,"return")==0){
                 strcpy(wordm[i].ir,"RETURN");
                 while(i<z){
-                i++;
+                i=i+2;
                 strcpy(wordm[i].ir," ");
                 strcpy(wordm[i].attribute," ");
                 strcpy(wordm[i].token," ");
                 }
-             }
+            }
             else if(strcmp(wordm[i].attribute,"if")==0){
                 strcpy(wordm[i].ir,"if");
                 i++;
